@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link href="style.css" type="text/css" rel="stylesheet" />
+<script src="jquery-1.8.3.min.js"></script>
+
+<title>Wall of Donation</title>
+
+</head>
+
+<body>
+
+<div id="header">
+  <ul class="navbar">
+    <li class="navbar"><a class="navlink">Main Wall</a></li> 
+    <li class="navbar"><a class="navlink">Groups</a></li>
+    <li class="navbar"><a class="navlink">Find People</a></li>
+    <li class="navbar"><a class="navlink">Donate</a></li>
+  </ul>
+</div>
+
+
+<div id="content">
+<h1 align="center">Another Brick in the Wall</h1>
+
+<table id="wall_table">
+</table>
+
+<div id="enlarger">
+</div>
+<div id="holder">
+</div>
+
+<script src="scripts.js"></script>
+<script>
+  $(document).ready(function() {
+  loadWall();
+  $(".hoverable").mouseenter(enlarge);
+  $("#holder").mouseleave(shrink);
+  });
+ </script>
+</body>
+</html>
