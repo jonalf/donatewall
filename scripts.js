@@ -1,5 +1,3 @@
-var showing = false;
-
 function loadWall() {
     var rows = 25;
     var cols = 15;
@@ -47,7 +45,6 @@ function resizeBrick( goalWidth, name, bricknum, size ) {
     resizer.html( name );    
 
     while( resizer.width() > goalWidth ) {
-	console.log( size );
 	resizer.css("font-size", size--);
     }
     
@@ -62,9 +59,19 @@ function enlarge(event) {
     //resizing occurs here
     resizeBrick( elm.width(), $(this).html(), "enlarger", 26 );		
     //    elm.html( $(this).html() );
+    
+    var top = pos.top - $(this).height() / 2;
+    var left = pos.left - $(this).width() / 2;
+    
+    if ( top < 0 )
+	top = 0;
+    if ( left < 0 )
+	left = 5;
+    else if ( left + elm.width() > $("body").width() ) 
+	left = $("body").width() - elm.width() - 5;
 
-    elm.css( "top", pos.top );
-    elm.css( "left", pos.left );
+    elm.css( "top", top );
+    elm.css( "left", left );
     elm.css("visibility","visible");
 
     holder.css( "top", pos.top );
