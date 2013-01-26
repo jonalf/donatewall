@@ -27,13 +27,13 @@ function loadWall() {
     var numBricks = bricknum;
     for (bricknum = 0; bricknum < numBricks; bricknum++ ) {
 	if ( bricknum == 0 ) 
-	    name = "Deirdre<br>Weaver";
+	    name = "Deirdre <br>Weaver";
 	else if ( bricknum == 1 )
-	    name = "Sarah<br>Hemmert";
+	    name = "Sarah <br>Hemmert";
 	else if ( bricknum == 76 )
-	    name = "JonAlf<br>Dyrland-Weaver";
+	    name = "JonAlf <br>Dyrland-Weaver";
 	else
-	    name = "SMC<br>Alumnus";
+	    name = "";
 	resizeBrick( goalWidth, name, bricknum, 14 );		
     }
 }
@@ -81,4 +81,35 @@ function enlarge(event) {
 
 function shrink() {
     $("#enlarger").css("visibility", "hidden");
+    $("#holder").css("visibility", "hidden");
+}
+
+function overlay() {
+   var v = $("#overlay").css("visibility");
+    $("#overlay").height( $(document).height() );
+        
+    if ( v == "hidden" ) {
+	$("#overlay").css("visibility", "visible");
+	
+	if ( $("#enlarger").text() == "" )
+	    donate();
+	else
+	    info();
+    }
+    else
+	$("#overlay").css("visibility", "hidden");
+}
+
+function donate() {
+    var html = "This brick has yet to be claimed, but if you donate right now it can be yours!<br>";
+    html+= "<br><button onclick=\"overlay()\">close</button>";
+    
+    $("#modal").html(html);
+}
+
+function info() {
+    var html = "<h2>" + $("#enlarger").text() + "</h2><hr><br>";
+    html+= "<br><button onclick=\"overlay()\">close</button>";
+    
+    $("#modal").html(html);
 }

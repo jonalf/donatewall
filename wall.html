@@ -33,12 +33,20 @@
 <div id="holder">
 </div>
 
+<div id="overlay">
+  <div id="modal">
+    LOOK, STUFF!<br>
+    <button onclick="overlay()">close</button>
+  </div>
+</div>
+
 <script src="scripts.js"></script>
 <script>
   $(document).ready(function() {
   loadWall();
   $(".hoverable").mouseenter(enlarge);
   $("#holder").mouseleave(shrink);
+  $("#holder").click( overlay );
   });
  </script>
 </body>
