@@ -108,3 +108,9 @@ a.navlink {
     margin: auto; /*center horizontally*/
     margin-top: 10%;
 }
+
+#wall_canvas {
+/*    height: 500px;
+    width: 500px;*/
+    border: 2px solid black;
+}

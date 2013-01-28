@@ -113,3 +113,31 @@ function info() {
     
     $("#modal").html(html);
 }
+
+function loadCanvas() {
+    var c = document.getElementById("wall_canvas");
+    var canvas = c.getContext("2d");
+    var height = $("#wall_canvas").height();
+    var width = $("#wall_canvas").width();
+    var boxes = new Array(100);
+    
+    for ( var i=0; i<boxes.length; i++ ) {
+	if ( i < 50 )
+	    boxes[i] = "pink";
+	else
+	    boxes[i] = "yellow";
+    }
+
+    var boxnum = 0;
+
+    var xscale = width/10;
+    var yscale = height/10;
+
+    for ( var x=0; x < 10; x++) {
+	for ( var y=0; y < 10; y++ ) {
+	    canvas.fillStyle = boxes[boxnum];
+	    canvas.fillRect(x * xscale, y * yscale, width / 10, height / 10);	    
+	    boxnum++;
+	}   
+    } 
+}
