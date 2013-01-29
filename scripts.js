@@ -119,25 +119,65 @@ function loadCanvas() {
     var canvas = c.getContext("2d");
     var height = $("#wall_canvas").height();
     var width = $("#wall_canvas").width();
-    var boxes = new Array(100);
-    
-    for ( var i=0; i<boxes.length; i++ ) {
-	if ( i < 50 )
-	    boxes[i] = "pink";
-	else
-	    boxes[i] = "yellow";
+
+    var groups = { "lions":33, "tigers":28, "bears":8.5, "toto":15.5, "jamie":15 };
+    var colors = [ "red", "blue", "pink", "yellow", "gold" ]
+    var c = 0;
+
+    var startx = 0;
+    var starty = 0;
+    var flip = true;
+    var totalArea = width * height;
+
+    console.log( groups );
+
+    for ( group in groups ) {
+	var weight = groups[group] * .01 * totalArea;
+	canvas.fillStyle = colors[ c++ ];
+
+	if ( flip ) {
+	    var boxHeight = height;
+	    var boxWidth = weight / height;
+	    canvas.fillRect(startx, starty, boxWidth, boxHeight);
+	    
+	    var textSize = setTextSize( group, boxWidth, canvas );
+	    canvas.fillStyle = "black";
+	    canvas.fillText( group, 
+			     startx + boxWidth/2 - textSize.width/2, 
+			     starty + boxHeight / 2);
+	    
+	    startx+= boxWidth;
+	    width-= boxWidth;
+	    flip = !flip;
+	}
+	else {
+	    var boxWidth = width;
+	    var boxHeight = weight/ width;
+	    canvas.fillRect(startx, starty, boxWidth, boxHeight);
+
+	    var textSize = setTextSize( group, boxWidth, canvas );
+	    canvas.fillStyle = "black";
+	    canvas.fillText( group, 
+			     startx + boxWidth/2 - textSize.width/2, 
+			     starty + boxHeight / 2);
+
+	    starty+= boxHeight;
+	    height-= boxHeight;
+	    flip = !flip;
+	}	    
     }
+}
 
-    var boxnum = 0;
-
-    var xscale = width/10;
-    var yscale = height/10;
-
-    for ( var x=0; x < 10; x++) {
-	for ( var y=0; y < 10; y++ ) {
-	    canvas.fillStyle = boxes[boxnum];
-	    canvas.fillRect(x * xscale, y * yscale, width / 10, height / 10);	    
-	    boxnum++;
-	}   
-    } 
+function setTextSize( text, maxWidth, canvas) {
+    
+    console.log("setting size");
+    var size = 75;
+    do {
+	canvas.font = size + "px Arial";
+	var width = canvas.measureText( text ).width;
+	size--;
+	console.log("\t" + size);
+    }    
+    while ( width > maxWidth );
+    return canvas.measureText( text );
 }
