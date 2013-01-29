@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link href="style.css" type="text/css" rel="stylesheet" />
+<script src="jquery-1.8.3.min.js"></script>
+
+<title>Wall of Donation</title>
+
+</head>
+
+<body>
+
+<div id="header">
+  <ul class="navbar">
+    <li class="navbar"><a class="navlink" href="wall.html">Main Wall</a></li> 
+    <li class="navbar"><a class="navlink">Groups</a></li>
+    <li class="navbar"><a class="navlink">Find People</a></li>
+    <li class="navbar"><a class="navlink">Donate</a></li>
+  </ul>
+</div>
+
+
+<div id="content" align="center">
+<h1 align="center">Another Brick in the Wall</h1>
+
+<canvas id="wall_canvas" width="500" height="500">
+</canvas>
+
+<div id="enlarger">
+</div>
+<div id="holder">
+</div>
+
+<div id="overlay">
+  <div id="modal">
+    LOOK, STUFF!<br>
+    <button onclick="overlay()">close</button>
+  </div>
+</div>
+
+<script src="scripts.js"></script>
+<script>
+  $(document).ready(function() {
+  loadCanvas();
+  $(".hoverable").mouseenter(enlarge);
+  $("#holder").mouseleave(shrink);
+  $("#holder").click( overlay );
+  });
+ </script>
+</body>
+</html>
