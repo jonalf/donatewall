@@ -121,63 +121,81 @@ function loadCanvas() {
     var width = $("#wall_canvas").width();
 
     var groups = { "lions":33, "tigers":28, "bears":8.5, "toto":15.5, "jamie":15 };
-    var colors = [ "red", "blue", "pink", "yellow", "gold" ]
+    var colors = [ "red", "blue", "green", "yellow", "pink" ]
     var c = 0;
 
     var startx = 0;
     var starty = 0;
-    var flip = true;
+    var flip = false;
     var totalArea = width * height;
 
-    console.log( groups );
+    canvas.textBaseline = "middle";
+    canvas.textAlign = "center";
+    var boxHeight, boxWidth, weight;
 
     for ( group in groups ) {
-	var weight = groups[group] * .01 * totalArea;
+	weight = groups[group] * .01 * totalArea;
 	canvas.fillStyle = colors[ c++ ];
-
 	if ( flip ) {
-	    var boxHeight = height;
-	    var boxWidth = weight / height;
-	    canvas.fillRect(startx, starty, boxWidth, boxHeight);
-	    
-	    var textSize = setTextSize( group, boxWidth, canvas );
-	    canvas.fillStyle = "black";
-	    canvas.fillText( group, 
-			     startx + boxWidth/2 - textSize.width/2, 
-			     starty + boxHeight / 2);
-	    
-	    startx+= boxWidth;
-	    width-= boxWidth;
-	    flip = !flip;
+	    boxHeight = height;
+	    boxWidth = weight / height;
 	}
 	else {
-	    var boxWidth = width;
-	    var boxHeight = weight/ width;
-	    canvas.fillRect(startx, starty, boxWidth, boxHeight);
+	    boxWidth = width;
+	    boxHeight = weight/ width;
+	}
 
-	    var textSize = setTextSize( group, boxWidth, canvas );
-	    canvas.fillStyle = "black";
-	    canvas.fillText( group, 
-			     startx + boxWidth/2 - textSize.width/2, 
-			     starty + boxHeight / 2);
+	canvas.fillRect(startx, starty, boxWidth, boxHeight);    
+	if (flip) {
+	    canvas.save();
+	    canvas.translate(startx + boxWidth/2, starty + boxHeight/2);
+	    canvas.rotate( Math.PI / -2 );
+	    canvas.translate(-1 * (startx + boxWidth/2), -1 *(starty + boxHeight/2));
+	}
+	
+	if ( flip )
+	    setTextSize( group, boxHeight, boxWidth, canvas );	    	
+	else
+	    setTextSize( group, boxWidth, boxHeight, canvas );	    	
+	canvas.fillStyle = "black";
+	canvas.fillText( group, 
+			 startx + boxWidth/2, 
+			 starty + boxHeight/2);	
 
+	if ( flip ) {
+	    canvas.restore();
+	    startx+= boxWidth;
+	    width-= boxWidth;
+	}
+	else {
 	    starty+= boxHeight;
 	    height-= boxHeight;
-	    flip = !flip;
-	}	    
+	}
+	flip = !flip;
     }
 }
 
-function setTextSize( text, maxWidth, canvas) {
+function setTextSize( text, maxWidth, maxHeight, canvas) {
     
-    console.log("setting size");
-    var size = 75;
+    var size = 100;
+
     do {
 	canvas.font = size + "px Arial";
-	var width = canvas.measureText( text ).width;
+	d = canvas.measureText( text ).width;
 	size--;
-	console.log("\t" + size);
     }    
-    while ( width > maxWidth );
-    return canvas.measureText( text );
+    while ( d > maxWidth );
+
+    $("<div />", {id: "scaler"}).hide().appendTo(document.body);
+    var s = $("#scaler");
+    s.text( text );	
+    
+    do {
+	s.css("font", size + "px arial,sans-serif");
+	size--;
+    }    
+    while ( s.height() > maxHeight );
+    
+    s.remove();
+    canvas.font = size + "px Arial";
 }
